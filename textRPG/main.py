@@ -1,5 +1,6 @@
 #import
 import time
+import random
 
 def main(inventory):
 	phoneMenu()
@@ -39,8 +40,9 @@ def main(inventory):
 		fakeLoadAnim()
 		statView(inventory)
 	elif selectionInt ==3:
-		#do option 3
-		print '3'
+		#browse web
+		fakeLoadAnim()
+		webBrowse(inventory)
 	elif selectionInt ==4:
 		#do option 4
 		print '4'
@@ -62,36 +64,83 @@ def intro(inventory):
 	inventory['name'] = raw_input()
 	fakeLoadAnim()
 	print '**logging in**'
-	fakeLoadAnim()
-	fakeLoadAnim()
+	time.sleep(1)
 	fakeLoadAnim()
 	print '**Welcome ' + inventory['name'] + '**'
+	time.sleep(2)
 	fakeLoadAnim()
 	main(inventory)
 
+#Menu option to display stats
 def statView(inventory):
 	print ''
 	print '~~~~~~~~~~~~~~~~~'
 	print 'Stats for user: ' + str(inventory['name'])
 	print 'Calls taken: ' + str(inventory['calls'])
-	print 'Sales : ' + str(inventory['sales'])
-	print 'Customer Satisfaction Rating: ' + str(inventory['satisfaction']) +  '%'
-	print 'Breaks Taken : ' + str(inventory['breaks'])
+	print 'Sales: ' + str(inventory['sales'])
+	print 'Customer Satisfaction Rating: ' + str(inventory['satisfaction'])
+  	print 'Manager Approval Rating: ' + str(inventory['approval'])
+	print 'Breaks Taken: ' + str(inventory['breaks'])
+  	print 'Morale: ' + str(inventory['morale'])
+	print '~~~~~~~~~~~~~~~~~'
+	print ''
+	
+	#exit back to main menu
+	time.sleep(3)
+	fakeLoadAnim()
+	main(inventory)
+
+#Menu option to browse web
+def webBrowse(inventory):
+  #random scenarios that give pos/neg to morale stat
+  #give a random chance to give pos/neg to manager approval stat
+  #scenarios presented as arrays with [info, morale, approval]
+
+	#initialise scenario list
+	scenarioStore = [
+		['[Blah blah blah]',10,0],
+		['[Dah Dah Dah]',0,-30],
+		['[Cah Cah Cah]',10,-10]
+	]
+
+	#begin display for user
+	print '[You open the browser to begin surfing the web]'
+	time.sleep(2)
+	fakeLoadAnim()
+
+	#randomly select scenario and apply the stats effect
+	curScenario = random.choice(scenarioStore)
+
+	#split curScenario into print statements from each array element
+	print curScenario[0]
+	print ''
+	print '~~~~~~~~~~~~~~~~~'
+	print 'Morale: ' + str(curScenario[1])
+	print 'Manager Approval: ' + str(curScenario[2])
 	print '~~~~~~~~~~~~~~~~~'
 	print ''
 
+	#increment/reduce the actual stat values
+	inventory['morale'] = inventory['morale'] + curScenario[1]
+	inventory['approval'] = inventory['approval'] + curScenario[2]
+		
+	#exit back to main menu
+	time.sleep(7)
+	fakeLoadAnim()
+	main(inventory)
+	
 #Fake load animation to save code repetition
 def fakeLoadAnim():
 	print ''
-	print '*'
+	print '~'
 	time.sleep(0.2)
-	print '**'
+	print '~~'
 	time.sleep(0.2)
-	print '***'
+	print '~~~'
 	time.sleep(0.2)
-	print '**'
+	print '~~~~'
 	time.sleep(0.2)
-	print '*'
+	print '~~~~~'
 	time.sleep(0.2)
 	print ''
 
@@ -114,7 +163,9 @@ if __name__ == '__main__':
 		'breaks' : 0,
 		'sales' : 0,
 		'satisfaction' : 50,
-		'name' : ''
+		'name' : '',
+			'morale' : 50,
+			'approval' : 50
 	}
 	#begin game
 	intro(blankInv)
