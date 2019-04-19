@@ -2,6 +2,7 @@
 import time
 import random
 import sys
+import scenariostore
 
 def main(inventory):
 	phoneMenu()
@@ -22,7 +23,7 @@ def main(inventory):
 			continue
 
 		#catch any int outside selection value range
-		if selectionInt < 1 or selectionInt > 5:
+		if selectionInt < 1 or selectionInt > 6:
 			print ''
 			print '**invalid input**'
 			print ''
@@ -34,21 +35,24 @@ def main(inventory):
 
 	#User selection now case by case
 	if selectionInt == 1:
-		#do option 1
+		#take call
 		print '1'
 	elif selectionInt ==2:
 		#stat view
 		fakeLoadAnim()
 		statView(inventory)
 	elif selectionInt ==3:
+		#check e-mails
+		print '3'
+	elif selectionInt ==4:
 		#browse web
 		fakeLoadAnim()
 		webBrowse(inventory)
-	elif selectionInt ==4:
-		#do option 4
-		print '4'
+	elif selectionInt ==5:
+		#take break
+		print '5'
 	else:
-		#do option 5
+		#log out
 		fakeLoadAnim()
 		print '**Logging Off**'
 		time.sleep(2)
@@ -117,15 +121,18 @@ def webBrowse(inventory):
 		time.sleep(5)
 		failState()
 
-	#initialise scenario list
-	scenarioStore = [
-		['[Blah blah blah]',10,0],
-		['[Dah Dah Dah]',0,-30],
-		['[Cah Cah Cah]',10,-10]
-	]
+	#if all scenarios have already played out then display message and send back to menu
+	if len(inventory['webScenarioStore']) == 0:
+		print '**IT have locked you out of the web browser - "Get back to work!"**'
+		time.sleep(5)
+		fakeLoadAnim()
+		main(inventory)
+
+	#Shuffle the list for popping in random order
+	random.shuffle(inventory['webScenarioStore'])
 
 	#randomly select scenario and apply the stats effect
-	curScenario = random.choice(scenarioStore)
+	curScenario = inventory['webScenarioStore'].pop()
 
 	#split curScenario into print statements from each array element
 	print curScenario[0]
@@ -165,9 +172,10 @@ def phoneMenu():
 	print '~~~~~~~~~~~~~~~~~'
 	print '(1) Take Call'
 	print '(2) View Stats'
-	print '(3) Browse Web'
-	print '(4) Take Break'
-	print '(5) Log Off'
+	print '(3) Check E-mails'
+	print '(4) Browse Web'
+	print '(5) Take Break'
+	print '(6) Log Off'
 	print '~~~~~~~~~~~~~~~~~'
 	print ''
 
@@ -180,6 +188,9 @@ def failState():
 
 #start on run
 if __name__ == '__main__':
+	#load in scenario data
+	webScenarioStore = scenariostore.webBrowseScenario()
+	
 	#initiate the inventory
 	blankInv = {
 		'calls' : 0,
@@ -189,7 +200,8 @@ if __name__ == '__main__':
 		'satisfaction' : 50,
 		'name' : '',
 		'morale' : 50,
-		'approval' : 50
+		'approval' : 50,
+		'webScenarioStore' : webScenarioStore
 	}
 	#begin game
 	intro(blankInv)
