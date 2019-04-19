@@ -1,0 +1,23 @@
+Break warnings
+	introduce a warning from the manager when you hit a certain break number 
+	after this warning the next break results in your manager telling you to
+	"not bother returning to your desk, just head straight out the front door
+	and don't come back"
+
+Check e-mails
+	menu option to check emails
+	have randomly generated emails with similar effects to that of web browsing
+
+Coaching session
+	after a certain call count a coaching session is triggered
+	own function where unless very good stats the manager berates your performance
+
+Buzz
+	after a certain call acount a buzz is triggered
+	buzz cliches such as safety moment, berating of stats, the introduction of a tariff
+
+File Split
+	clean up python presentation by splitting each menu option into a seperate python file
+
+Warning system
+	warnings increase warning count, when 3 warnings are reached the game fail-states

@@ -1,6 +1,7 @@
 #import
 import time
 import random
+import sys
 
 def main(inventory):
 	phoneMenu()
@@ -46,25 +47,26 @@ def main(inventory):
 	elif selectionInt ==4:
 		#do option 4
 		print '4'
-	elif selectionInt ==5:
-		#do option 5
-		print '5'
 	else:
-		print 'excuse me?'
+		#do option 5
+		fakeLoadAnim()
+		print '**Logging Off**'
+		time.sleep(2)
+		failState()
 
 #the intro sequence that sets up the context for the player
 def intro(inventory):
 	#TODO: add intro scene setting before boot sequence (story beginning)
 	#animated boot sequence to main menu for introduction
-	print '**Booting device**'
+	print '**Booting Device**'
 	fakeLoadAnim()
-	print '**Sitrox Beta 3.0.2**'
+	print '**Citrix Beta 3.0.2**'
 	fakeLoadAnim()
 	print '**Please enter your username**'
 	inventory['name'] = raw_input()
 	fakeLoadAnim()
-	print '**logging in**'
-	time.sleep(1)
+	print '**Logging In**'
+	time.sleep(2)
 	fakeLoadAnim()
 	print '**Welcome ' + inventory['name'] + '**'
 	time.sleep(2)
@@ -96,17 +98,31 @@ def webBrowse(inventory):
   #give a random chance to give pos/neg to manager approval stat
   #scenarios presented as arrays with [info, morale, approval]
 
+  	#begin display for user
+	print '[You open the browser to begin surfing the web]'
+	inventory['browses'] = inventory['browses'] + 1
+	time.sleep(2)
+	fakeLoadAnim()
+
+	#check to see if too much web browsing over taking calls
+	if inventory['browses'] > (inventory['calls'] + 1):
+		#display fail-state message of manager disapproval and job sacking
+		print '[Your manager approaches you looking very angry]'
+		print ''
+		time.sleep(2)
+		print '"There are calls in the queue and you are sat here acting like this is an internet cafe?"'
+		print ''
+		time.sleep(5)
+		print '"You are finished at this company. Pack up your stuff and get out!"'
+		time.sleep(5)
+		failState()
+
 	#initialise scenario list
 	scenarioStore = [
 		['[Blah blah blah]',10,0],
 		['[Dah Dah Dah]',0,-30],
 		['[Cah Cah Cah]',10,-10]
 	]
-
-	#begin display for user
-	print '[You open the browser to begin surfing the web]'
-	time.sleep(2)
-	fakeLoadAnim()
 
 	#randomly select scenario and apply the stats effect
 	curScenario = random.choice(scenarioStore)
@@ -155,17 +171,25 @@ def phoneMenu():
 	print '~~~~~~~~~~~~~~~~~'
 	print ''
 
+#game fail-state that terminates the game
+def failState():
+	fakeLoadAnim()
+	print '**Game Over**'
+	time.sleep(2)
+	sys.exit()
+
 #start on run
 if __name__ == '__main__':
 	#initiate the inventory
 	blankInv = {
 		'calls' : 0,
 		'breaks' : 0,
+		'browses' : 0,
 		'sales' : 0,
 		'satisfaction' : 50,
 		'name' : '',
-			'morale' : 50,
-			'approval' : 50
+		'morale' : 50,
+		'approval' : 50
 	}
 	#begin game
 	intro(blankInv)
