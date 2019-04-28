@@ -1,4 +1,4 @@
-#start out with 32 teams and simulate tournament
+#start out by importing team list and simulate tournament
 #list scores for each round
 #split teams at true random and generate results at true random
 
